@@ -1,0 +1,75 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+  - namespace.yaml
+  - keda-interceptor-ingress.yaml
+  - http-scaled-object.yaml
+
+helmCharts:
+  - name: keda
+    repo: https://kedacore.github.io/charts
+    releaseName: keda
+    namespace: keda
+    version: 2.18.1
+    includeCRDs: true
+    valuesInline:
+      resources:
+        operator:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        metricServer:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        webhooks:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+  - name: keda-add-ons-http
+    repo: https://kedacore.github.io/charts
+    releaseName: http-add-on
+    namespace: keda
+    version: 0.11.1
+    includeCRDs: true
+    valuesInline:
+      images:
+      operator:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      scaler:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      interceptor:
+        replicas:
+          min: 1
+          max: 3
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi  
+## prerrequisites: helm, kustomize

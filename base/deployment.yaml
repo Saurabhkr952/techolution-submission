@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  namespace: assignment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: app
+        image: nginx:1.25-alpine
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+        command: ["/bin/sh"]
+        args:
+          - -c
+          - |
+            echo "<html><body><h1>Hello</h1><p>This is running on Saurabh's homelab</p></body></html>" > /usr/share/nginx/html/index.html && nginx -g 'daemon off;'

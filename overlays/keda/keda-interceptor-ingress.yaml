@@ -1,0 +1,27 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: keda-interceptor-proxy
+  namespace: assignment
+spec:
+  type: ExternalName
+  externalName: keda-add-ons-http-interceptor-proxy.keda.svc.cluster.local
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  namespace: assignment
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: techolution-assignment.homelabcraft.ovh
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: keda-interceptor-proxy
+            port:
+              number: 8080

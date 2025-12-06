@@ -1,0 +1,20 @@
+apiVersion: http.keda.sh/v1alpha1
+kind: HTTPScaledObject
+metadata:
+  name: app-http-scaler
+  namespace: assignment
+spec:
+  hosts:
+    - techolution-assignment.homelabcraft.ovh
+  scaleTargetRef:
+    name: app-deployment
+    service: app-service
+    port: 80
+  replicas:
+    min: 1
+    max: 10
+  scalingMetric:
+    requestRate:
+        granularity: 1s
+        targetValue: 5
+        window: 1m
