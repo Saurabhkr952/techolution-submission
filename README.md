@@ -165,10 +165,11 @@ kubectl describe scaledobject app-http-scaler -n assignment
 ### 7. Results
 
 ![KEDA Scaling Pods](assets/keda-scale-pods.png)
-*KEDA scaling pods based on HTTP request rate*
+*KEDA scaling pods based on HTTP request rate. *
+**NOTE:** The pod is in pending state because my worker node has limited resources.
 
 ![KEDA Scaling Logs](assets/keda-scale-logs.png)
-*KEDA operator logs showing HTTP-based scaling decisions*
+*Scaling decision logs*
 
 ## Load Testing Script
 
